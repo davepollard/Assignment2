@@ -4,5 +4,5 @@
 
 using namespace cv;
 
-std::vector<Rect> ViolaJonesDetection(Mat image, Mat &retImage);
-std::vector<Rect> detectAndDisplay(Mat frame);
+std::vector<Rect> ViolaJonesDetection(Mat image, Mat &retImage, char* cascadeFile);
+std::vector<Rect> detectAndDisplay(Mat frame, char* cascadeFile);

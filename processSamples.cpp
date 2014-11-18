@@ -12,6 +12,8 @@
 #include "sobel.h"
 #endif
 
+#include "processSamples.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <fstream>
@@ -42,6 +44,7 @@ void processImage(Mat inputImage, Mat &outputImage) {
 	outputImage = magImage.clone();
 }
 
+/*
 int main(int argc, char* argv[]) {
 	// process input filename
 	if (argc != 3) {
@@ -121,4 +124,4 @@ int main(int argc, char* argv[]) {
 
 
 	return(0);
-}
+}*/
