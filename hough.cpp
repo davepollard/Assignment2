@@ -61,6 +61,11 @@ void getHoughSpace(Mat image, int h_threshold, int m_threshold, int min_rad, int
 	Mat magImage;
 	magnitude(gradXImage, gradYImage, m_threshold, magImage);
 
+	/*
+	imshow("gradX",gradXImage);
+	imshow("gradY",gradYImage);
+	imshow("magImage",magImage);    */
+
 	// Calculate angle of image
 	Mat angImage;
 	angle(gradXImage, gradYImage, angImage);

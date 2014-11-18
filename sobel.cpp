@@ -103,8 +103,8 @@ void angle(Mat gradX, Mat gradY, Mat &retImage)
 	int numRows = gradX.rows;
 	int numCols = gradX.cols;
 
-	uchar xVal;
-	uchar yVal;
+	int xVal;
+	int yVal;
 
 	double result;
 
@@ -116,8 +116,8 @@ void angle(Mat gradX, Mat gradY, Mat &retImage)
 	{
 		for (int y=0; y<numCols; y++) 
 		{
-			xVal = gradX.at<uchar>(x,y)-127;
-			yVal = gradY.at<uchar>(x,y)-127;
+			xVal = (int)gradX.at<uchar>(x,y)-127;
+			yVal = (int)gradY.at<uchar>(x,y)-127;
 
 			result = atan2((double)yVal,(double)xVal) * scalingFactor;
 

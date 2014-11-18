@@ -25,9 +25,9 @@ using namespace cv;
 #define NUM_CMD_LINE_INPUTS 1
 
 #define H_THRESHOLD 10
-#define M_THRESHOLD 5
-#define MIN_RAD 5
-#define MAX_RAD 10
+#define M_THRESHOLD 20
+#define MIN_RAD 20
+#define MAX_RAD 100
 
 
 int main(int argc, char* argv[])
@@ -42,6 +42,10 @@ int main(int argc, char* argv[])
 	// image import
 	Mat OriginalImage;
 	OriginalImage = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+
+	// grayscale image
+	Mat GrayImage;
+	cvtColor( OriginalImage, GrayImage, CV_BGR2GRAY );
 	imshow("Original Image",OriginalImage);
 	
 
@@ -54,7 +58,7 @@ int main(int argc, char* argv[])
 	// Hough transform
 	Mat HoughImage;
 	vector<Rect> HTResults;
-	HTResults = houghTransform(OriginalImage, H_THRESHOLD, M_THRESHOLD, MIN_RAD, MAX_RAD, HoughImage);
+	HTResults = houghTransform(GrayImage, H_THRESHOLD, M_THRESHOLD, MIN_RAD, MAX_RAD, HoughImage);
 	imshow("Hough Transform", HoughImage);
 
 
