@@ -71,13 +71,13 @@ int main(int argc, char* argv[])
 		cvtColor( OriginalImage, GrayImage, CV_BGR2GRAY );
 		imshow("Original Image",OriginalImage);
 		
-/*
+
 		// Viola-Jones face detection method
 		Mat RawVJImage;
 		vector<Rect> RawVJResults;
 		RawVJResults = ViolaJonesDetection(OriginalImage, RawVJImage, RawCascadeFile, 1);
 		imshow("Raw Viola-Jones Results", RawVJImage);
-*/
+
 		// Viola-Jones method on magnitude image
 		Mat MagVJImage;
 		vector<Rect> MagVJResults;
@@ -85,13 +85,12 @@ int main(int argc, char* argv[])
 		imshow("Mag Viola-Jones Results", MagVJImage);
 		cout << "Number of MagVJ Results found: " << MagVJResults.size() << endl;
 
-/*
 		// Hough transform
 		Mat HoughImage;
 		vector<Rect> HTResults;
 		HTResults = houghTransform(GrayImage, H_THRESHOLD, M_THRESHOLD, MIN_RAD, MAX_RAD, HoughImage);
 		imshow("Hough Transform", HoughImage);
-*/
+
 
 		// Comparison for "likelihood" of location
 		// - Now have two vector<Rect>s showing possible locations
