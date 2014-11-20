@@ -37,6 +37,8 @@ using namespace cv;
 #define MIN_RAD 20
 #define MAX_RAD 100
 
+#define HOUGH_VAL 2
+
 
 int main(int argc, char* argv[])
 {
@@ -66,6 +68,9 @@ int main(int argc, char* argv[])
 		Mat OriginalImage;
 		OriginalImage = imread(ImageName, CV_LOAD_IMAGE_COLOR);
 
+		Mat ResultsImage;
+		ResultsImage = OriginalImage.clone();
+
 		// grayscale image
 		Mat GrayImage;
 		cvtColor( OriginalImage, GrayImage, CV_BGR2GRAY );
@@ -94,8 +99,38 @@ int main(int argc, char* argv[])
 
 		// Comparison for "likelihood" of location
 		// - Now have two vector<Rect>s showing possible locations
-		// - - VJResults
+		// - - RawVJResults
+		// - - MagVJResults
 		// - - HTResults
+
+		// Declare vector for filtered results
+		vector<Rect> FilteredMagVJ;
+		int xVal;
+		int yVal;
+
+		// Compare MagVJResults to Hough Transform
+		for (int j=0; j<=MagVJResults.size(); j++) {
+			xVal = MagVJResults[j].x + MagVJResults[j].width/2;
+			yVal = MagVJResults[j].y + MagVJResults[j].height/2;
+
+
+			// compare to hough transform
+			if (HoughImage.at<uchar>(xVal,yVal) > HOUGH_VAL) {
+				FilteredMagVJ.push_back(MagVJResults[j]);
+				cout << "Found something" << endl;
+			}
+		}
+
+		cout << FilteredMagVJ.size() << endl;
+
+
+		// highlight on image
+		for (int j=0; j<FilteredMagVJ.size(); j++) {
+			cout << "making rectangle" << endl;
+			rectangle(ResultsImage, Point(FilteredMagVJ[j].x, FilteredMagVJ[j].y), Point(FilteredMagVJ[j].x + FilteredMagVJ[j].width, FilteredMagVJ[j].y + FilteredMagVJ[j].height), Scalar( 0, 255, 0 ), 2);
+		}
+
+		imshow("Results",ResultsImage);
 
 		waitKey(0);
 	}

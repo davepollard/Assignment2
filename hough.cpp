@@ -18,7 +18,11 @@
 
 #include "hough.h"
 #include <stdlib.h>
+
+#ifndef STDIO_H_
+#define STDIO_H_
 #include <stdio.h>
+#endif
 
 #define PI 3.14159
 
@@ -31,9 +35,9 @@ std::vector<Rect> houghTransform(Mat image, int h_threshold, int m_threshold, in
 	getHoughSpace(image, h_threshold, m_threshold, min_rad, max_rad, houghSpace);
 
 	// apply Gaussian Blur
-	int output_blur = 5;
+	int output_blur = 9;
 	Mat blurredHough;
-	GaussianBlur(houghSpace, blurredHough, Size(output_blur,output_blur), 0);
+	GaussianBlur(houghSpace, blurredHough, Size(output_blur,output_blur), 1);
 
 	// analyse hough space
 	std::vector<Rect> locations;
