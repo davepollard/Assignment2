@@ -19,9 +19,9 @@ using namespace cv;
 /** Global variables */
 CascadeClassifier cascade;
 
-std::vector<Rect> ViolaJonesDetection(Mat image, Mat &retImage, char* cascadeFile){
+std::vector<Rect> ViolaJonesDetection(Mat image, Mat &retImage, char* cascadeFile, int method){
 	std::vector<Rect> returnRect;
-	returnRect = detectAndDisplay(image, cascadeFile);
+	returnRect = detectAndDisplay(image, cascadeFile, method);
 	//imshow("detected faces", image);
 	retImage = image.clone();
 
@@ -29,17 +29,23 @@ std::vector<Rect> ViolaJonesDetection(Mat image, Mat &retImage, char* cascadeFil
 }
 
 
-std::vector<Rect> detectAndDisplay(Mat frame, char* cascadeFile)
+std::vector<Rect> detectAndDisplay(Mat frame, char* cascadeFile, int method)
 {
 	std::vector<Rect> faces;
 	Mat frame_gray;
 
-	// 1. Prepare Image by turning it into Grayscale and normalising lighting
-	/*cvtColor( frame, frame_gray, CV_BGR2GRAY );
-	equalizeHist( frame_gray, frame_gray );*/
-
-	// 1a Prepare image using new process used for magnitude generation
-	processImage(frame, frame_gray);
+	// alternate methods
+	// -- 1=grayscale image
+	// -- 2=magnitude image
+	if (method==1) {
+		// 1. Prepare Image by turning it into Grayscale and normalising lighting
+		cvtColor( frame, frame_gray, CV_BGR2GRAY );
+		equalizeHist( frame_gray, frame_gray );
+	} else if (method==2) {
+		// 1a Prepare image using new process used for magnitude generation
+		processImage(frame, frame_gray);	
+	}
+	
 
 	// 2. Perform Viola-Jones Object Detection 
 

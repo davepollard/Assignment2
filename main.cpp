@@ -22,9 +22,10 @@ using namespace std;
 using namespace cv;
 
 // parameter definitions
-#define NUM_CMD_LINE_INPUTS 2
+#define NUM_CMD_LINE_INPUTS 3
 // Arguements: Image filename
-//             .XML filename
+//             .XML filename for raw image
+//             .XML filename for mag image
 
 #define H_THRESHOLD 10
 #define M_THRESHOLD 20
@@ -40,7 +41,8 @@ int main(int argc, char* argv[])
 		return(0);
 	}
 
-	char* cascadeFile = argv[2];
+	char* RawCascadeFile = argv[2];
+	char* MagCascadeFile = argv[3];
 
 	// ----- Main functions ----- //
 	// image import
@@ -54,10 +56,16 @@ int main(int argc, char* argv[])
 	
 
 	// Viola-Jones face detection method
-	Mat VJImage;
-	vector<Rect> VJResults;
-	VJResults = ViolaJonesDetection(OriginalImage, VJImage, cascadeFile);
-	imshow("Viola-Jones Results", VJImage);
+	Mat RawVJImage;
+	vector<Rect> RawVJResults;
+	RawVJResults = ViolaJonesDetection(OriginalImage, RawVJImage, RawCascadeFile, 1);
+	imshow("Raw Viola-Jones Results", RawVJImage);
+
+	// Viola-Jones method on magnitude image
+	Mat MagVJImage;
+	vector<Rect> MagVJResults;
+	MagVJResults = ViolaJonesDetection(OriginalImage, MagVJImage, MagCascadeFile, 2);
+	imshow("Mag Viola-Jones Results", MagVJImage);
 
 	// Hough transform
 	Mat HoughImage;
