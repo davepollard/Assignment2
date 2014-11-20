@@ -35,7 +35,7 @@ std::vector<Rect> houghTransform(Mat image, int h_threshold, int m_threshold, in
 	getHoughSpace(image, h_threshold, m_threshold, min_rad, max_rad, houghSpace);
 
 	// apply Gaussian Blur
-	int output_blur = 9;
+	int output_blur = 15;
 	Mat blurredHough;
 	GaussianBlur(houghSpace, blurredHough, Size(output_blur,output_blur), 1);
 

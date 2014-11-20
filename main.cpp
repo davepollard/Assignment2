@@ -37,7 +37,7 @@ using namespace cv;
 #define MIN_RAD 20
 #define MAX_RAD 100
 
-#define HOUGH_VAL 2
+#define HOUGH_VAL 100
 
 
 int main(int argc, char* argv[])
@@ -77,12 +77,12 @@ int main(int argc, char* argv[])
 		imshow("Original Image",OriginalImage);
 		
 
-		// Viola-Jones face detection method
+/*		// Viola-Jones face detection method
 		Mat RawVJImage;
 		vector<Rect> RawVJResults;
 		RawVJResults = ViolaJonesDetection(OriginalImage, RawVJImage, RawCascadeFile, 1);
 		imshow("Raw Viola-Jones Results", RawVJImage);
-
+*/
 		// Viola-Jones method on magnitude image
 		Mat MagVJImage;
 		vector<Rect> MagVJResults;
@@ -96,6 +96,11 @@ int main(int argc, char* argv[])
 		HTResults = houghTransform(GrayImage, H_THRESHOLD, M_THRESHOLD, MIN_RAD, MAX_RAD, HoughImage);
 		imshow("Hough Transform", HoughImage);
 
+		// MedianImage
+		Mat MedianImage;
+		equalizeHist(HoughImage, HoughImage);
+		medianBlur(HoughImage, MedianImage, 25);
+		imshow("median",MedianImage);
 
 		// Comparison for "likelihood" of location
 		// - Now have two vector<Rect>s showing possible locations
@@ -113,20 +118,25 @@ int main(int argc, char* argv[])
 			xVal = MagVJResults[j].x + MagVJResults[j].width/2;
 			yVal = MagVJResults[j].y + MagVJResults[j].height/2;
 
+			if (xVal > HoughImage.cols)
+				xVal = HoughImage.cols;
+
+			if (yVal > HoughImage.rows)
+				yVal = HoughImage.rows;
+
 
 			// compare to hough transform
-			if (HoughImage.at<uchar>(xVal,yVal) > HOUGH_VAL) {
+			if (MedianImage.at<uchar>(xVal,yVal) > HOUGH_VAL) {
 				FilteredMagVJ.push_back(MagVJResults[j]);
-				cout << "Found something" << endl;
 			}
 		}
 
-		cout << FilteredMagVJ.size() << endl;
+		cout << "Found: " << FilteredMagVJ.size() << endl;
 
 
 		// highlight on image
 		for (int j=0; j<FilteredMagVJ.size(); j++) {
-			cout << "making rectangle" << endl;
+			//cout << "making rectangle" << endl;
 			rectangle(ResultsImage, Point(FilteredMagVJ[j].x, FilteredMagVJ[j].y), Point(FilteredMagVJ[j].x + FilteredMagVJ[j].width, FilteredMagVJ[j].y + FilteredMagVJ[j].height), Scalar( 0, 255, 0 ), 2);
 		}
 
