@@ -66,6 +66,7 @@ int main(int argc, char* argv[])
 	vector<Rect> MagVJResults;
 	MagVJResults = ViolaJonesDetection(OriginalImage, MagVJImage, MagCascadeFile, 2);
 	imshow("Mag Viola-Jones Results", MagVJImage);
+	cout << "Number of MagVJ Results found: " << MagVJResults.size() << endl;
 
 	// Hough transform
 	Mat HoughImage;
